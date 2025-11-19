@@ -18,11 +18,4 @@ console.log(currentRoute.value)
 </template>
 
 <style scoped>
-#contact-button {
-  border-radius: 55px;
-  background: #f09f1d;
-  box-shadow:
-    inset 26px 26px 52px #cc8719,
-    inset -26px -26px 52px #ffb721;
-}
 </style>
