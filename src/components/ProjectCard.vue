@@ -16,105 +16,54 @@ const isHover = ref(false)
 
 <template>
   <div
-    class="w-xl p-4 relative overflow-hidden bg-accent/90 rounded-xl"
-    @mouseenter="isHover = true"
-    @mouseleave="isHover = false"
-  >
-    <img :src="image" :alt="title" class="w-full h-auto block transition-transform duration-300" />
-    <div
-      :class="[
-        'absolute inset-0 flex items-center justify-center text-white transition-opacity duration-300',
-        isHover ? 'opacity-100 bg-black/60' : 'opacity-0 bg-black/0',
-      ]"
-    >
-      <div class="p-4 text-center max-w-[90%]">
-        <h1 class="text-xl font-bold mb-2">{{ title }}</h1>
-        <p class="text-sm mb-4">{{ description }}</p>
-        <div class="flex flex-wrap gap-2 my-2 justify-center">
-          <div
-            v-for="subject in subjects"
-            v-bind:key="subject"
-            class="bg-gray-800 rounded-full px-3 py-1 text-xs font-semibold text-white"
-          >
-            {{ subject }}
-          </div>
-        </div>
-        <div class="flex gap-3 justify-center">
-          <a
-            :href="link"
-            target="_blank"
-            class="px-4 py-2 bg-green-600 rounded text-sm flex items-center gap-2"
-          >
-            <i class="pi pi-globe"></i> Website</a
-          >
-          <a
-            :href="githubLink"
-            target="_blank"
-            class="px-4 py-2 bg-gray-800 rounded text-sm flex items-center gap-2"
-          >
-            <i class="pi pi-github"></i> Github</a
-          >
-        </div>
+    class="group flex flex-col h-full bg-gray-800/30 rounded-xl overflow-hidden border border-gray-700/50 hover:border-accent/50 transition-all duration-300 hover:shadow-lg hover:shadow-accent/5 hover:-translate-y-1">
+    <!-- Image Section -->
+    <div class="relative overflow-hidden h-48 shrink-0">
+      <div class="absolute inset-0 bg-gray-900 animate-pulse" v-if="!image"></div>
+      <img :src="image" :alt="title"
+        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+      <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/20 to-transparent opacity-60"></div>
+
+      <!-- Under Dev Badge -->
+      <div v-if="under_dev"
+        class="absolute top-3 right-3 flex items-center gap-2 px-3 py-1 rounded-full bg-yellow-500/20 border border-yellow-500/30 backdrop-blur-sm">
+        <span class="relative flex h-2 w-2">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-yellow-500"></span>
+        </span>
+        <span class="text-[10px] font-bold uppercase tracking-wider text-yellow-500">In Progress</span>
+      </div>
+    </div>
+
+    <!-- Content Section -->
+    <div class="flex flex-col flex-grow p-6">
+      <div class="mb-4">
+        <h3 class="text-xl font-bold text-white mb-2 group-hover:text-accent transition-colors line-clamp-1">{{ title }}
+        </h3>
+        <p class="text-gray-400 text-sm leading-relaxed line-clamp-3">{{ description }}</p>
+      </div>
+
+      <!-- Tags -->
+      <div class="flex flex-wrap gap-2 mb-6 mt-auto">
+        <span v-for="subject in subjects" :key="subject"
+          class="px-2.5 py-1 text-[10px] font-medium uppercase tracking-wider text-gray-400 bg-gray-900/50 rounded-md border border-gray-700/50 group-hover:border-gray-600 transition-colors">
+          {{ subject }}
+        </span>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex gap-3 pt-4 border-t border-gray-700/50">
+        <a :href="link" target="_blank"
+          class="flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-semibold text-gray-900 bg-accent rounded-lg hover:bg-accent/90 transition-all duration-300 shadow-lg shadow-accent/10 hover:shadow-accent/20">
+          <i class="pi pi-external-link text-xs"></i>
+          Visit
+        </a>
+        <a :href="githubLink" target="_blank"
+          class="flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-semibold text-gray-300 bg-gray-800/50 border border-gray-700 rounded-lg hover:bg-gray-800 hover:text-white hover:border-gray-600 transition-all duration-300">
+          <i class="pi pi-github text-xs"></i>
+          Code
+        </a>
       </div>
     </div>
   </div>
-
-  <!--  <div class="flex justify-between items-center p-4 bg-accent/90 w-full rounded-xl">-->
-  <!--    <div class="flex flex-col justify-between gap-5 w-full">-->
-  <!--      <div>-->
-  <!--        <div class="flex flex-col-reverse md:flex-row items-center gap-2 ">-->
-  <!--          <a v-bind:href="`${link}`" target="_blank" class="font-bold text-3xl text-white">{{-->
-  <!--            title-->
-  <!--          }}</a>-->
-  <!--          <div-->
-  <!--            v-if="under_dev"-->
-  <!--            class="flex gap-1 items-center bg-yellow-400 text-black text-xs font-semibold px-2 py-1 rounded-full ml-2"-->
-  <!--          >-->
-  <!--            <span class="relative flex size-3">-->
-  <!--              <span-->
-  <!--                class="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"-->
-  <!--              ></span>-->
-  <!--              <span class="relative inline-flex size-3 rounded-full bg-green-500"></span>-->
-  <!--            </span>-->
-  <!--            <p>Under Development</p>-->
-  <!--          </div>-->
-  <!--        </div>-->
-  <!--        <h1 class="font-semibold text-md text-gray-300 max-w-lg">{{ description }}</h1>-->
-  <!--        <div class="flex flex-wrap gap-2 my-2 justify-center md:justify-start">-->
-  <!--          <div-->
-  <!--            v-for="subject in subjects"-->
-  <!--            v-bind:key="subject"-->
-  <!--            class="bg-gray-800 rounded-full px-3 py-1 text-xs font-semibold text-white"-->
-  <!--          >-->
-  <!--            {{ subject }}-->
-  <!--          </div>-->
-  <!--        </div>-->
-  <!--      </div>-->
-  <!--      <div>-->
-  <!--        <div class="flex justify-center md:justify-start gap-2">-->
-  <!--          <a-->
-  <!--            :href="link"-->
-  <!--            target="_blank"-->
-  <!--            class="px-5 py-2 bg-green-600 rounded-lg text-md text-white font-semibold hover:bg-green-700 transition-all duration-300 ease-in-out"-->
-  <!--          >-->
-  <!--            <i class="pi pi-globe"></i> Website-->
-  <!--          </a>-->
-  <!--          <a-->
-  <!--            :href="githubLink"-->
-  <!--            target="_blank"-->
-  <!--            class="px-5 py-2 bg-gray-800 rounded-lg text-md text-white font-semibold hover:bg-gray-900 transition-all duration-300 ease-in-out"-->
-  <!--          >-->
-  <!--            <i class="pi pi-github"></i> Github-->
-  <!--          </a>-->
-  <!--        </div>-->
-  <!--      </div>-->
-  <!--    </div>-->
-  <!--    <img-->
-  <!--      :src="image"-->
-  <!--      :alt="title"-->
-  <!--      class="min-w-[50%] md:w-1/2 hover:scale-110 transition-all duration-300 ease-in-out"-->
-  <!--    />-->
-  <!--  </div>-->
 </template>
-
-<style scoped></style>

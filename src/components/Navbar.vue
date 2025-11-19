@@ -1,9 +1,10 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
 defineOptions({ name: 'NavbarCustom' })
 
 const mobileOpen = ref(false)
+const scrolled = ref(false)
 const toggleMobile = () => (mobileOpen.value = !mobileOpen.value)
 const closeMobile = () => (mobileOpen.value = false)
 
@@ -21,104 +22,128 @@ const routeName = computed(() => {
   }
 })
 
+const socials = ref(
+  {
+    icon: 'instagram',
+    url: 'https://www.instagram.com/dimazzbagazz/'
+  },
+  {
+    icon: 'linkedin',
+    url: 'https://www.linkedin.com/in/dimasbagassaputro/'
+  },
+  {
+    icon: 'github',
+    url: 'https://github.com/Diba15'
+  }
+)
+
+const handleScroll = () => {
+  scrolled.value = window.scrollY > 20
+}
+
+onMounted(() => {
+  window.addEventListener('scroll', handleScroll)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll)
+})
+
 const onClickSocial = (url) => {
   window.open(url, '_blank')
-  console.log('Clicked social')
 }
 </script>
 
 <template>
-  <div
-    class="flex gap-4 justify-center items-center md:pt-4 md:px-4 z-30 relative"
-  >
-    <!-- Left routes - hidden on small screens -->
-    <div class="hidden md:flex flex-gap-4 grow justify-around">
-      <RouterLink to="/">Home</RouterLink>
-      <RouterLink to="/about">About</RouterLink>
-      <RouterLink to="/projects">Projects</RouterLink>
+  <nav :class="[
+    'sticky top-0 left-0 right-0 z-50 transition-all duration-300 border-b',
+    scrolled ? 'bg-gray-900/80 backdrop-blur-md border-gray-800 py-3' : 'bg-gray-900 border-gray-800 py-5'
+  ]">
+    <div class="max-w-7xl mx-auto px-4 md:px-8 flex justify-between items-center">
+
+      <!-- Logo / Brand -->
+      <RouterLink to="/" class="flex items-center gap-2 group">
+        <div
+          class="w-8 h-8 rounded-lg bg-accent flex items-center justify-center text-gray-900 font-bold text-xl neue group-hover:scale-110 transition-transform">
+          D
+        </div>
+        <span class="text-xl font-bold text-white tracking-wide neue group-hover:text-accent transition-colors">
+          DIMAS<span class="text-accent">.</span>
+        </span>
+      </RouterLink>
+
+      <!-- Desktop Navigation -->
+      <div class="hidden md:flex items-center gap-8">
+        <RouterLink v-for="route in ['/', '/about', '/projects']" :key="route" :to="route"
+          class="text-sm font-medium text-gray-400 hover:text-white transition-colors relative py-1 group"
+          active-class="!text-accent">
+          {{ route === '/' ? 'Home' : route.slice(1).charAt(0).toUpperCase() + route.slice(2) }}
+          <span
+            class="absolute bottom-0 left-0 w-0 h-0.5 bg-accent transition-all duration-300 group-hover:w-full group-[.router-link-active]:w-full"></span>
+        </RouterLink>
+      </div>
+
+      <!-- Socials & Mobile Toggle -->
+      <div class="flex items-center gap-4">
+        <!-- Social Icons (Desktop) -->
+        <div class="hidden md:flex items-center gap-3 border-l border-gray-700 pl-4">
+          <button @click="onClickSocial('https://www.instagram.com/dimazzbagazz/')"
+            class="text-gray-400 hover:text-accent transition-colors hover:scale-110 transform duration-200">
+            <i :class="`pi pi-instagram text-lg`"></i>
+          </button>
+          <button @click="onClickSocial('https://github.com/Diba15')"
+            class="text-gray-400 hover:text-accent transition-colors hover:scale-110 transform duration-200">
+            <i :class="`pi pi-github text-lg`"></i>
+          </button>
+          <button @click="onClickSocial('https://www.linkedin.com/in/dimasbagassaputro/')"
+            class="text-gray-400 hover:text-accent transition-colors hover:scale-110 transform duration-200">
+            <i :class="`pi pi-linkedin text-lg`"></i>
+          </button>
+        </div>
+
+        <!-- Mobile Toggle -->
+        <button
+          class="md:hidden w-10 h-10 flex items-center justify-center rounded-lg bg-gray-800 text-white hover:bg-gray-700 transition-colors"
+          @click="toggleMobile" aria-label="Open menu">
+          <i class="pi pi-bars"></i>
+        </button>
+      </div>
     </div>
-
-    <!-- Center title + mobile bars -->
-    <div
-      class="flex-grow bg-accent/95 md:rounded-t-xl p-4 md:p-2 justify-between md:justify-center flex md:min-w-2xl items-center"
-    >
-      <button class="hidden md:inline-flex"></button>
-
-      <h1 class="text-2xl text-center font-bold text-gray-100">
-        Portfolio <span class="hidden md:inline-flex"> - {{ routeName }}</span>
-      </h1>
-
-      <!-- Bars button: visible only on mobile -->
-      <button
-        class="md:hidden p-2 rounded-full flex items-center"
-        @click="toggleMobile"
-        aria-label="Open menu"
-      >
-        <i class="pi pi-bars text-white"></i>
-      </button>
-    </div>
-
-    <!-- Right social - hidden on small screens -->
-    <div class="hidden md:flex grow justify-around">
-      <button v-on:click="onClickSocial('https://www.instagram.com/dimazzbagazz/')"
-        class="flex items-center overflow-hidden bg-gray-200 hover:bg-accent p-2 rounded-full"
-      >
-        <i class="pi pi-instagram text-lg"></i>
-      </button>
-      <button v-on:click="onClickSocial('https://www.linkedin.com/in/dimasbagassaputro/')"
-        class="flex items-center overflow-hidden bg-gray-200 hover:bg-accent p-2 rounded-full"
-      >
-        <i class="pi pi-linkedin text-lg"></i>
-      </button>
-      <button v-on:click="onClickSocial('https://github.com/Diba15')"
-        class="flex items-center overflow-hidden bg-gray-200 hover:bg-accent p-2 rounded-full"
-      >
-        <i class="pi pi-github text-lg"></i>
-      </button>
-    </div>
-  </div>
+  </nav>
 
   <!-- Fullscreen mobile menu overlay -->
-  <div
-    v-show="mobileOpen"
-    @click.self="closeMobile"
-    :class="[
-      'fixed inset-0 z-50 bg-gray-900/95 flex flex-col items-center pt-16 transition-transform duration-450 ease-out',
-      mobileOpen ? 'translate-y-0' : '-translate-y-full',
-    ]"
-    style="backdrop-filter: blur(4px)"
-  >
-    <!-- Close button -->
-    <div class="w-full flex justify-end px-6 pb-4">
-      <button
-        class="p-3 rounded-full bg-gray-200 hover:bg-accent"
-        @click="closeMobile"
-        aria-label="Close menu"
-      >
-        <i class="pi pi-times"></i>
-      </button>
-    </div>
+  <div v-show="mobileOpen" class="fixed inset-0 z-[60] bg-gray-900/95 backdrop-blur-xl transition-all duration-300">
+    <div class="flex flex-col h-full p-6">
+      <div class="flex justify-end">
+        <button
+          class="w-10 h-10 flex items-center justify-center rounded-lg bg-gray-800 text-white hover:bg-gray-700 transition-colors"
+          @click="closeMobile" aria-label="Close menu">
+          <i class="pi pi-times"></i>
+        </button>
+      </div>
 
-    <!-- Routes -->
-    <nav class="flex flex-col gap-6 items-center mt-6">
-      <RouterLink to="/" class="text-2xl text-gray-100" @click="closeMobile">Home</RouterLink>
-      <RouterLink to="/about" class="text-2xl text-gray-100" @click="closeMobile">About</RouterLink>
-      <RouterLink to="/projects" class="text-2xl text-gray-100" @click="closeMobile"
-        >Projects</RouterLink
-      >
-    </nav>
+      <div class="flex-1 flex flex-col items-center justify-center gap-8">
+        <RouterLink v-for="route in ['/', '/about', '/projects']" :key="route" :to="route" @click="closeMobile"
+          class="text-3xl font-bold text-gray-400 hover:text-white transition-colors neue tracking-wider"
+          active-class="!text-accent">
+          {{ route === '/' ? 'Home' : route.slice(1).charAt(0).toUpperCase() + route.slice(2) }}
+        </RouterLink>
+      </div>
 
-    <!-- Socials -->
-    <div class="flex gap-4 mt-12">
-      <a class="p-3 rounded-full bg-gray-200 hover:bg-accent" href="#" @click="closeMobile">
-        <i class="pi pi-instagram text-lg"></i>
-      </a>
-      <a class="p-3 rounded-full bg-gray-200 hover:bg-accent" href="#" @click="closeMobile">
-        <i class="pi pi-linkedin text-lg"></i>
-      </a>
-      <a class="p-3 rounded-full bg-gray-200 hover:bg-accent" href="#" @click="closeMobile">
-        <i class="pi pi-github text-lg"></i>
-      </a>
+      <div class="flex justify-center gap-6 pb-8">
+        <button @click="onClickSocial('https://www.instagram.com/dimazzbagazz/')"
+          class="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:text-white hover:bg-accent transition-all duration-300">
+          <i :class="`pi pi-instagram text-xl`"></i>
+        </button>
+        <button @click="onClickSocial('https://github.com/Diba15')"
+          class="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:text-white hover:bg-accent transition-all duration-300">
+          <i :class="`pi pi-github text-xl`"></i>
+        </button>
+        <button @click="onClickSocial('https://www.linkedin.com/in/dimasbagassaputro/')"
+          class="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:text-white hover:bg-accent transition-all duration-300">
+          <i :class="`pi pi-linkedin text-xl`"></i>
+        </button>
+      </div>
     </div>
   </div>
 </template>

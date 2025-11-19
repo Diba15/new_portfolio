@@ -17,20 +17,7 @@ const personal = ref({
 
 const experiences = ref([])
 
-const education = ref([
-  {
-    school: 'Telkom University',
-    degree: 'Bachelor of Informatics Engineering',
-    period: '2022 - 2024',
-    tags: ['Python', 'Machine Learning', 'Firebase', 'Microsoft Office', 'Computer Science'],
-  },
-  {
-    school: 'Telkom University',
-    degree: 'Diploma of Education, Informatics',
-    period: '2019 - 2022',
-    tags: ['MySQL', 'CodeIgniter', 'PHP', 'Java', 'Kotlin', 'Android', 'Web Development'],
-  },
-])
+const education = ref([])
 
 const certificates = ref([])
 
@@ -100,264 +87,193 @@ watch(totalPages, (n) => {
 </script>
 
 <template>
-  <div class="min-h-[calc(90vh-96px)] bg-accent/5 flex justify-center items-start">
-    <div
-      class="w-full clip-animate bg-accent/95 text-gray-200 shadow-xl p-6 md:p-10 grid grid-cols-1 md:grid-cols-3 gap-6"
-    >
-      <!-- Left column: profile -->
-      <aside class="col-span-1 flex flex-col gap-6">
-        <div class="flex items-center gap-4">
-          <img
-            :src="personal.avatar"
-            alt="avatar"
-            class="w-28 h-28 md:w-32 md:h-32 rounded-full object-cover border-2 border-white"
-          />
-          <div>
-            <h2 class="text-2xl font-bold">{{ personal.name }}</h2>
-            <p class="text-white text-sm mt-1">{{ personal.title }}</p>
-            <a
-              :href="`mailto:${personal.email}`"
-              class="block text-xs text-gray-300 mt-2 hover:underline"
-              >{{ personal.email }}</a
-            >
+  <div class="min-h-[calc(90vh-96px)] bg-gray-900 text-gray-200 flex justify-center items-start p-4 md:p-8">
+    <div class="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-12 gap-8 animate-fade-in">
+
+      <!-- Left Column: Profile (Sticky) -->
+      <aside class="lg:col-span-4 xl:col-span-3 flex flex-col gap-6">
+        <div class="bg-gray-800/50 rounded-2xl p-6 border border-gray-700/50 sticky top-24 backdrop-blur-sm">
+          <div class="flex flex-col items-center text-center mb-6">
+            <div class="relative mb-4 group">
+              <div
+                class="absolute inset-0 bg-accent/20 rounded-full blur-xl group-hover:bg-accent/30 transition-all duration-500">
+              </div>
+              <img :src="personal.avatar" alt="avatar"
+                class="relative w-32 h-32 rounded-full object-cover border-2 border-gray-700 group-hover:border-accent transition-colors duration-300 shadow-xl" />
+            </div>
+            <h2 class="text-2xl font-bold text-white mb-1 neue tracking-wide">{{ personal.name }}</h2>
+            <p class="text-accent font-medium text-sm mb-3">{{ personal.title }}</p>
+            <a :href="`mailto:${personal.email}`"
+              class="text-xs text-gray-400 hover:text-white transition-colors flex items-center gap-2 bg-gray-900/50 px-3 py-1.5 rounded-full border border-gray-700 hover:border-gray-500">
+              <i class="pi pi-envelope text-xs"></i>
+              {{ personal.email }}
+            </a>
           </div>
-        </div>
 
-        <div class="bg-accent/90 p-4 rounded-lg text-sm leading-relaxed">
-          <p>{{ personal.summary }}</p>
-        </div>
+          <div class="space-y-6">
+            <div class="text-sm leading-relaxed text-gray-400 border-t border-gray-700/50 pt-6">
+              <p>{{ personal.summary }}</p>
+            </div>
 
-        <div class="bg-accent/90 p-4 rounded-lg">
-          <h3 class="flex items-center gap-2 text-lg font-semibold mb-3">
-            <span
-              class="w-6 h-6 flex items-center justify-center bg-accent/30 rounded-full text-black text-sm"
-              >i</span
-            >
-            Skills
-          </h3>
-          <div class="flex flex-wrap gap-2">
-            <span
-              class="tag"
-              v-for="t of skills"
-              :key="t"
-              >{{ t }}</span
-            >
+            <div class="border-t border-gray-700/50 pt-6">
+              <h3 class="text-sm font-bold text-white uppercase tracking-wider mb-4 flex items-center gap-2">
+                <i class="pi pi-bolt text-accent"></i> Skills
+              </h3>
+              <div class="flex flex-wrap gap-2">
+                <span v-for="t of skills" :key="t"
+                  class="px-2.5 py-1 text-xs font-medium text-gray-300 bg-gray-900/50 rounded-md border border-gray-700 hover:border-accent/50 hover:text-white transition-all cursor-default">
+                  {{ t }}
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </aside>
 
-      <!-- Right column: sections -->
-      <main class="col-span-2 flex flex-col gap-6">
+      <!-- Right Column: Content -->
+      <main class="lg:col-span-8 xl:col-span-9 flex flex-col gap-8">
+
         <!-- Work Experience -->
-        <section class="bg-accent/90 p-4 rounded-lg">
-          <div class="section-header">
-            <h3>Work Experience</h3>
-          </div>
-          <!--    Work Data      -->
-          <div v-if="!isLoading" class="mt-4 space-y-4">
-            <article v-for="(exp, idx) in experiences" :key="idx" class="flex gap-4">
-              <div class="w-3 flex flex-col items-center">
-                <div class="dot" />
-                <div class="line" v-if="idx !== experiences.length - 1" />
+        <section>
+          <h3 class="flex items-center gap-3 text-xl font-bold text-white mb-6">
+            <span class="w-8 h-1 bg-accent rounded-full"></span>
+            Work Experience
+          </h3>
+
+          <div v-if="!isLoading" class="space-y-8 relative pl-4 border-l border-gray-800 ml-3">
+            <article v-for="(exp, idx) in experiences" :key="idx" class="relative pl-8 group">
+              <!-- Timeline Dot -->
+              <div
+                class="absolute -left-[24px] top-1.5 w-4 h-4 rounded-full border-2 border-gray-700 bg-gray-900 group-hover:border-accent group-hover:bg-accent transition-all duration-300">
               </div>
-              <div class="flex-1">
-                <div class="flex items-center justify-between">
-                  <h4 class="font-semibold">{{ exp.company }}</h4>
-                  <span class="text-sm text-gray-300">{{ exp.duration }}</span>
+
+              <div
+                class="bg-gray-800/30 rounded-xl p-6 border border-gray-700/50 hover:border-gray-600 hover:bg-gray-800/50 transition-all duration-300">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
+                  <h4 class="text-lg font-bold text-white">{{ exp.company }}</h4>
+                  <span
+                    class="text-xs font-medium text-accent bg-accent/10 px-2 py-1 rounded-md border border-accent/20 whitespace-nowrap">
+                    {{ exp.duration }}
+                  </span>
                 </div>
-                <p class="text-sm text-gray-300">{{ exp.title }}</p>
-                <div class="mt-2 flex flex-wrap gap-2">
-                  <span class="tag" v-for="(tg, i) in exp.skills" :key="i">{{ tg }}</span>
+                <p class="text-gray-300 font-medium mb-3">{{ exp.title }}</p>
+                <div class="flex flex-wrap gap-2">
+                  <span class="text-xs text-gray-500" v-for="(tg, i) in exp.skills" :key="i">#{{ tg }}</span>
                 </div>
               </div>
             </article>
           </div>
-          <div v-else class="flex justify-center">
-            <IsLoading class="flex justify-center" />
+          <div v-else class="flex justify-center py-12">
+            <IsLoading />
           </div>
         </section>
 
         <!-- Education -->
-        <section class="bg-accent/90 p-4 rounded-lg">
-          <div class="section-header">
-            <h3>Education</h3>
-          </div>
-          <!--    Edu Data      -->
-          <div v-if="!isLoading" class="mt-4 space-y-4">
-            <article v-for="(ed, i) in education" :key="i" class="flex gap-4">
-              <div class="w-3 flex flex-col items-center">
-                <div class="dot" />
-                <div class="line" v-if="i !== education.length - 1" />
+        <section>
+          <h3 class="flex items-center gap-3 text-xl font-bold text-white mb-6">
+            <span class="w-8 h-1 bg-accent rounded-full"></span>
+            Education
+          </h3>
+
+          <div v-if="!isLoading" class="space-y-8 relative pl-4 border-l border-gray-800 ml-3">
+            <article v-for="(ed, i) in education" :key="i" class="relative pl-8 group">
+              <div
+                class="absolute -left-[24px] top-1.5 w-4 h-4 rounded-full border-2 border-gray-700 bg-gray-900 group-hover:border-accent group-hover:bg-accent transition-all duration-300">
               </div>
-              <div class="flex-1">
-                <div class="flex items-center justify-between">
-                  <h4 class="font-semibold">{{ ed.company }}</h4>
-                  <span class="text-sm text-gray-300">{{ ed.duration }}</span>
+
+              <div
+                class="bg-gray-800/30 rounded-xl p-6 border border-gray-700/50 hover:border-gray-600 hover:bg-gray-800/50 transition-all duration-300">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
+                  <h4 class="text-lg font-bold text-white">{{ ed.company }}</h4>
+                  <span
+                    class="text-xs font-medium text-accent bg-accent/10 px-2 py-1 rounded-md border border-accent/20 whitespace-nowrap">
+                    {{ ed.duration }}
+                  </span>
                 </div>
-                <p class="text-sm text-gray-300">{{ ed.title }}</p>
-                <div class="mt-2 flex flex-wrap gap-2">
-                  <span class="tag" v-for="(tg, j) in ed.subjects" :key="j">{{ tg }}</span>
+                <p class="text-gray-300 font-medium mb-3">{{ ed.title }}</p>
+                <div class="flex flex-wrap gap-2">
+                  <span class="text-xs text-gray-500" v-for="(tg, j) in ed.subjects" :key="j">#{{ tg }}</span>
                 </div>
               </div>
             </article>
           </div>
-          <div v-else class="flex justify-center">
-            <IsLoading class="flex justify-center" />
+          <div v-else class="flex justify-center py-12">
+            <IsLoading />
           </div>
         </section>
 
-        <!-- Certificates (paginated) -->
-        <section class="bg-accent/90 p-4 rounded-lg relative">
-          <div class="section-header">
-            <h3>Certificates</h3>
-          </div>
-          <!--    Certif Data      -->
-          <div v-if="!isLoading" class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-            <article
-              v-for="(c, i) in paginatedCertificates"
-              :key="`${(currentPage - 1) * itemsPerPage + i}`"
-              class="p-3 bg-accent/92 rounded-md"
-            >
-              <div class="flex items-start justify-between gap-2">
-                <div>
-                  <div>
-                    <h4 class="font-semibold">{{ c.title }}</h4>
-                    <p class="text-sm text-gray-300">
-                      {{ c.issuer }} •
-                      <span class="text-xs"
-                        >{{ c.issue_date }} - {{ c.expiry_date ? c.expiry_date : 'Present' }}</span
-                      >
-                    </p>
-                  </div>
-                  <a :href="c.url" class="tag mt-2"
-                    >Credential <i class="pi pi-external-link"></i
-                  ></a>
-                </div>
+        <!-- Certificates -->
+        <section>
+          <div class="flex items-center justify-between mb-6">
+            <h3 class="flex items-center gap-3 text-xl font-bold text-white">
+              <span class="w-8 h-1 bg-accent rounded-full"></span>
+              Certificates
+            </h3>
 
-                <svg
-                  class="w-6 h-6 text-accent shrink-0"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="1.5"
-                    d="M9 12l2 2 4-4"
-                  />
-                  <circle cx="12" cy="12" r="9" stroke-width="1.5" />
-                </svg>
-              </div>
-              <div class="mt-3 flex flex-wrap gap-2">
-                <span class="tag" v-for="(tg, k) in c.tags" :key="k">{{ tg }}</span>
-              </div>
-            </article>
-          </div>
-          <div v-else class="flex justify-center">
-            <IsLoading class="flex justify-center" />
-          </div>
-
-          <!-- pagination controls -->
-          <div class="mt-4 flex items-center justify-end gap-3">
-            <button
-              @click="prevPage"
-              :disabled="currentPage === 1"
-              class="w-8 h-8 rounded-full flex items-center justify-center bg-accent/10 hover:bg-accent/20 disabled:opacity-40"
-              title="Previous"
-            >
-              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="1.5"
-                  d="M15 18l-6-6 6-6"
-                />
-              </svg>
-            </button>
-
-            <div class="text-sm text-gray-300 select-none">
-              {{ currentPage }} / {{ totalPages }}
+            <!-- Pagination Controls -->
+            <div class="flex items-center gap-2">
+              <button @click="prevPage" :disabled="currentPage === 1"
+                class="w-8 h-8 rounded-lg flex items-center justify-center border border-gray-700 text-gray-400 hover:text-white hover:border-gray-500 disabled:opacity-30 disabled:cursor-not-allowed transition-all">
+                <i class="pi pi-chevron-left text-xs"></i>
+              </button>
+              <span class="text-xs font-medium text-gray-500 w-12 text-center">{{ currentPage }} / {{ totalPages
+                }}</span>
+              <button @click="nextPage" :disabled="currentPage === totalPages"
+                class="w-8 h-8 rounded-lg flex items-center justify-center border border-gray-700 text-gray-400 hover:text-white hover:border-gray-500 disabled:opacity-30 disabled:cursor-not-allowed transition-all">
+                <i class="pi pi-chevron-right text-xs"></i>
+              </button>
             </div>
+          </div>
 
-            <button
-              @click="nextPage"
-              :disabled="currentPage === totalPages"
-              class="w-8 h-8 rounded-full flex items-center justify-center bg-accent/10 hover:bg-accent/20 disabled:opacity-40"
-              title="Next"
-            >
-              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="1.5"
-                  d="M9 6l6 6-6 6"
-                />
-              </svg>
-            </button>
+          <div v-if="!isLoading" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <article v-for="(c, i) in paginatedCertificates" :key="`${(currentPage - 1) * itemsPerPage + i}`"
+              class="group bg-gray-800/30 rounded-xl p-5 border border-gray-700/50 hover:border-accent/50 hover:bg-gray-800/50 transition-all duration-300 flex flex-col h-full">
+              <div class="flex justify-between items-start gap-4 mb-4">
+                <div>
+                  <h4 class="font-bold text-white mb-1 line-clamp-2 group-hover:text-accent transition-colors">{{
+                    c.title }}</h4>
+                  <p class="text-xs text-gray-400">
+                    {{ c.issuer }} • {{ c.issue_date }}
+                  </p>
+                </div>
+                <a :href="c.url" target="_blank"
+                  class="w-8 h-8 rounded-lg bg-gray-900 flex items-center justify-center text-gray-400 group-hover:text-white group-hover:bg-accent group-hover:scale-110 transition-all duration-300 shrink-0">
+                  <i class="pi pi-external-link text-xs"></i>
+                </a>
+              </div>
+
+              <div class="mt-auto pt-4 border-t border-gray-700/30 flex flex-wrap gap-2">
+                <span v-for="(tg, k) in c.tags" :key="k"
+                  class="text-[10px] uppercase tracking-wider font-medium text-gray-500 bg-gray-900/50 px-2 py-1 rounded border border-gray-800">
+                  {{ tg }}
+                </span>
+              </div>
+            </article>
+          </div>
+          <div v-else class="flex justify-center py-12">
+            <IsLoading />
           </div>
         </section>
+
       </main>
     </div>
   </div>
 </template>
 
 <style scoped>
-.clip-animate {
-  animation: clip-anim 600ms ease-out forwards;
+.animate-fade-in {
+  animation: fadeIn 0.8s ease-out forwards;
 }
 
-/* clip animation */
-@keyframes clip-anim {
-  0% {
-    clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
-  100% {
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-}
-
-/* small UI helpers */
-/* gunakan variable --accent jika tersedia, fallback ke warna hijau lama */
-.tag {
-  display: inline-block;
-  background: rgba(255, 187, 0, 0.59);
-  color: var(--accent-text, #714801);
-  padding: 0.25rem 0.5rem;
-  border-radius: 999px;
-  font-size: 0.75rem;
-  border: 1px solid rgba(255, 187, 0, 0.12);
-}
-
-/* timeline markers */
-.dot {
-  width: 10px;
-  height: 10px;
-  background: var(--accent, #ab6d02);
-  border-radius: 999px;
-  margin-top: 4px;
-}
-.line {
-  width: 2px;
-  background: rgba(255, 187, 0, 0.621);
-  flex: 1;
-  margin-top: 4px;
-  margin-bottom: 4px;
-}
-
-/* section header */
-.section-header h3 {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 1.05rem;
-  font-weight: 600;
-  color: #d1fae5;
-}
-.section-header h3::before {
-  content: '✦';
-  color: var(--accent, #ab6d02);
-  font-size: 0.9rem;
-  margin-right: 0.5rem;
 }
 </style>
