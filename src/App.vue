@@ -11,7 +11,7 @@ console.log(currentRoute.value)
 </script>
 
 <template>
-  
+  <Analytics />
   <Navbar />
 
   <div class="min-h-[calc(100vh-96px)] rounded-t-3xl">
