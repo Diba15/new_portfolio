@@ -16,7 +16,7 @@ const isHover = ref(false)
 
 <template>
   <div
-    class="w-xl p-4 relative overflow-hidden"
+    class="w-xl p-4 relative overflow-hidden bg-accent/90 rounded-xl"
     @mouseenter="isHover = true"
     @mouseleave="isHover = false"
   >
