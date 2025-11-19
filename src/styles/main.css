@@ -1,0 +1,29 @@
+@import "tailwindcss";
+@import 'primeicons/primeicons.css';
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Raleway:ital,wght@0,100..900;1,100..900&family=Space+Grotesk:wght@300..700&display=swap');
+
+@theme {
+  --color-base: #1a202c;
+  --color-accent: #f09f1d;
+}
+
+body {
+  @apply text-gray-800;
+}
+
+.neue {
+    font-family: 'Bebas Neue', cursive;
+}
+
+.montserrat {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.space-grotesk {
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+* {
+    font-family: 'Raleway', sans-serif;
+}
