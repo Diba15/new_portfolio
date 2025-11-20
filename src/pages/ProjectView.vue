@@ -1,18 +1,17 @@
 <script setup>
 import ProjectCard from '@/components/ProjectCard.vue'
 import { ref, onMounted } from 'vue'
-import ProjectService from '@/service/model/Project.js'
+import api from '@/http-service.js'
 import Loading from '@/components/Loading.vue'
 
 const projects = ref([])
 const isLoading = ref(true)
 
 onMounted(async () => {
-  const projectData = await ProjectService.getAll()
-  projects.value = projectData.data.flat()
+  const projectData = await api.projects.get()
+  projects.value = projectData.data.body
 
-  // Sort projects by date asc
-  projects.value.sort((a, b) => new Date(b.date) - new Date(a.date))
+  console.log(projectData)
 
   isLoading.value = false
 })

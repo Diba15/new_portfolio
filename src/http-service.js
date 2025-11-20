@@ -1,12 +1,7 @@
-import axios from 'axios'
+import {treaty} from "@elysiajs/eden"
 
 const BASE_URL = import.meta.env.VITE_API_URL
 
-const httpService = axios.create({
-  baseURL: BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-})
+const api = treaty(BASE_URL)
 
-export default httpService
+export default api;
