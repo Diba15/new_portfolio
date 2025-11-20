@@ -1,9 +1,9 @@
 <script setup>
 import programming from '@/assets/img/programming.svg'
-import express from '@/assets/img/express-js.png'
 import mongodb from '@/assets/img/mongodb.png'
 import vue from '@/assets/img/vue.png'
 import tailwind from '@/assets/img/tailwind.svg'
+import elysia from '@/assets/img/elysia.png'
 </script>
 
 <template>
@@ -51,7 +51,7 @@ import tailwind from '@/assets/img/tailwind.svg'
           <div class="flex gap-6 items-center grayscale hover:grayscale-0 transition-all duration-500">
             <img :src="vue" alt="Vue.js" class="h-8 w-auto opacity-60 hover:opacity-100 transition-opacity" />
             <img :src="tailwind" alt="Tailwind" class="h-8 w-auto opacity-60 hover:opacity-100 transition-opacity" />
-            <img :src="express" alt="Express" class="h-8 w-auto opacity-60 hover:opacity-100 transition-opacity" />
+            <img :src="elysia" alt="Elysia" class="h-8 w-auto opacity-60 hover:opacity-100 transition-opacity" />
             <img :src="mongodb" alt="MongoDB" class="h-8 w-auto opacity-60 hover:opacity-100 transition-opacity" />
           </div>
         </div>
