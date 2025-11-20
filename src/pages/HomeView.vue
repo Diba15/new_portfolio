@@ -3,7 +3,7 @@ import programming from '@/assets/img/programming.svg'
 import mongodb from '@/assets/img/mongodb.png'
 import vue from '@/assets/img/vue.png'
 import tailwind from '@/assets/img/tailwind.svg'
-import elysia from '@/assets/img/elysia.png'
+import elysia from '@/assets/img/Elysia.png'
 </script>
 
 <template>
