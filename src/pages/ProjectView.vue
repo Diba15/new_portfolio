@@ -11,8 +11,6 @@ onMounted(async () => {
   const projectData = await api.projects.get()
   projects.value = projectData.data.body
 
-  console.log(projectData)
-
   isLoading.value = false
 })
 </script>
